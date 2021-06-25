@@ -1,2 +1,57 @@
-<mat-toolbar>Admin Perpustakaan</mat-toolbar>
-<router-outlet></router-outlet>
+<ng-container>
+    <!--toolbar-->
+    <mat-toolbar color="primary" class="example-header">
+        <button mat-icon-button (click)="sidenav.toggle()">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <span>Perpustakaan</span>
+        <div class="uk-width-expand"></div>
+        <small>ADMIN</small>
+        <mat-icon matListIcon>person_outline</mat-icon>
+    </mat-toolbar>
+    <!--end toolbar-->
+    
+    <mat-sidenav-container class="admin-container">
+      <mat-sidenav 
+      #sidenav 
+      mode="side" 
+      [position]="'start'" 
+      [opened]="true"
+      class="sidenav-left"
+      [fixedInViewport]="true" 
+      [fixedTopGap]="60"
+      [fixedBottomGap]="0">
+    
+      <mat-nav-list>
+            <mat-list-item routerLink="/admin/dashboard">
+                <mat-icon matListIcon>dashboard</mat-icon>
+                <h3 matLine>dashboard</h3>
+            </mat-list-item>
+            <mat-list-item routerLink="/admin/product">
+                <mat-icon matListIcon>person_add</mat-icon>
+                <h3 matLine>Data Anggota</h3>
+        </mat-list-item>
+            <mat-list-item routerLink="/admin/data">
+                <mat-icon matListIcon>auto_stories</mat-icon>
+                <h3 matLine>Data Buku</h3>
+    </mat-list-item>
+    </mat-nav-list>
+
+    
+    </mat-sidenav>
+    
+    <mat-sidenav #sidenav mode="side" [position]="'end'"  class="example-sidenav"
+    [fixedInViewport]="true" [fixedTopGap]="60"
+    [fixedBottomGap]="0">
+    
+       
+    
+    </mat-sidenav>
+    <!--sidenav content-->
+    <mat-sidenav-content style="padding: 20px; background-color: #ccc;">
+    <!--halaman-halaman tampil disini-->
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+    <!--end sidenav content-->
+    </mat-sidenav-container>   
+</ng-container>
