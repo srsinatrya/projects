@@ -25,7 +25,7 @@
                     <td>{{book.Prodi}}</td>
                     <td align="right">
                         <button mat-button color="primary" (click)="productDetail(book,idx)">Edit</button>
-                        <button mat-button color="warn" (click)="deleteProduct(idx)">Delete</button>
+                        <button mat-button color="warn" (click)="deleteProduct(book.idx)">Delete</button>
                     </td>
                 </tr>
             </tbody>

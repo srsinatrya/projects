@@ -9,6 +9,7 @@ import { DataComponent } from './data/data.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { DataDetailComponent } from './data-detail/data-detail.component';
 import { FormsModule } from '@angular/forms';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 const routes: Routes = [
   {
@@ -50,7 +51,8 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     MaterialDesign,
     FormsModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ]
 })
 export class AdminModule { }

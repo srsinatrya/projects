@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ApiService } from 'src/app/services/api.service';
 import { DataDetailComponent } from '../data-detail/data-detail.component';
 
 @Component({
@@ -12,7 +13,8 @@ export class DataComponent implements OnInit {
   book:any={};
   books:any=[];
   constructor(
-    public dialog:MatDialog
+    public dialog:MatDialog,
+    public api:ApiService
   ) { }
 
   ngOnInit(): void {
@@ -26,26 +28,26 @@ export class DataComponent implements OnInit {
     };
     this.getBooks();
   }
-
+  loading:boolean | undefined;
   getBooks()
   {
-    //4. memperbarui koleksi books
-    this.books=[
-      {
-        title:'Filsafat Ilmu',
-        author:'Dr. H.M Zainudin, MA',
-        publisher:'Trilogi',
-        year:2020,
-        isbn:'8298377474',
-      },
-      {
-        title:'Sejarah Dunia Yang Disembunyikan',
-        author:'Jonathan Black',
-        publisher:'Global Elite',
-        year:2020,
-        isbn:'82983323455',
-      }
-    ];
+    this.loading=true;
+    this.api.get('bookswithauth').subscribe(result=>{
+    this.books=result;
+    this.loading=false;
+  },error=>{
+    this.loading=false;
+  })
+  /*
+    this.loading=true;
+    this.api.get('books').subscribe(result=>{
+      this.books=result; 
+      this.loading=false;
+    },error=>{
+      this.loading=false;
+      alert('Ada masalah saat pengambilan data, coba lagi!')
+    })
+    */
   }
 
   dataDetail(data: any,idx: number)
@@ -54,21 +56,34 @@ export class DataComponent implements OnInit {
      width:'400px',
      data:data
    });
-   dialog.afterClosed().subscribe((res: any)=>{
-     if(res)
-     {
-        //jika idx=-1 (penambahan data baru) maka tambahkan data
-       if(idx==-1)this.books.push(res);      
-        //jika tidak maka perbarui data  
-       else this.books[idx]=res; 
+   dialog.afterClosed().subscribe(res=>{
+    if(res)
+    {
+       //jika idx=-1 (penambahan data baru) maka tambahkan data
+      if(idx==-1)this.books.push(res);      
+       //jika tidak maka perbarui data  
+      else this.books[idx]=data;
      }
    })
  }
- deleteData(idx: any)
- {
-   var conf=confirm('Delete item?');
-   if(conf)
-   this.books.splice(idx,1);
+
+ loadingDelete:any={};
+deleteProduct(id: any,idx: any)
+{
+  
+  var conf=confirm('Delete item?');
+  if(conf)
+  {
+    this.loadingDelete[idx]=true;
+    this.api.delete('books/'+id).subscribe(res => {
+      this.books.splice(idx, 1);
+      this.loadingDelete[idx]=false;
+    },eror=>{
+      this.loadingDelete[idx]=false;
+      alert('Tidak dapat menghapus data');
+    });
+
+   }
  }
 
 }
